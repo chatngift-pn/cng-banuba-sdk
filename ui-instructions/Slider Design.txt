@@ -1,0 +1,10 @@
+Standard Slider:
+○────────────────●──────────────○
+0%              50%            100%
+
+Range Slider (trim):
+○─────────○──────○──────────────○
+Clip Start  Playhead  Clip End
+
+Step Slider (speed):
+0.25x  0.5x  1x●  2x  4x

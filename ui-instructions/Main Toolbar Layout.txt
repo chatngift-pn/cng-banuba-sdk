@@ -1,0 +1,7 @@
+┌─────────────────────────────────────┐
+│                                     │
+│  [Trim] [Split] [Speed] [Filters]   │
+│  [Adjust] [Text] [Stickers] [Audio] │
+│  [Transitions] [More...]            │
+│                                     │
+└─────────────────────────────────────┘
