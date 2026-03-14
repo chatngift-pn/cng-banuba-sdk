@@ -16,7 +16,9 @@
     "start": "yarn workspace cng-editor-example start",
     "example:android": "yarn workspace cng-editor-example android",
     "example:ios": "yarn workspace cng-editor-example ios",
-    "example:start": "yarn workspace cng-editor-example start"
+    "example:start": "yarn workspace cng-editor-example start",
+    "clean": "watchman watch-del-all 2>/dev/null; rm -rf $TMPDIR/metro-* $TMPDIR/haste-map-*",
+    "start:reset": "yarn workspace cng-editor-example start --reset-cache"
   },
   "resolutions": {
     "react-native": "0.73.4"
