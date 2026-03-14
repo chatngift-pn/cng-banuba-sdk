@@ -34,6 +34,8 @@ apps/example/android/local.properties
 apps/example/ios/build/
 apps/example/ios/Pods/
 apps/example/ios/*.xcworkspace
+apps/example/ios/Podfile.lock
+apps/example/ios/.xcode.env.local
 
 # Misc
 .DS_Store

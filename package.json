@@ -11,6 +11,9 @@
     "sdk:build": "yarn workspace cng-editor-sdk build",
     "sdk:lint": "yarn workspace cng-editor-sdk lint",
     "sdk:test": "yarn workspace cng-editor-sdk test",
+    "android": "yarn workspace cng-editor-example android",
+    "ios": "yarn workspace cng-editor-example ios",
+    "start": "yarn workspace cng-editor-example start",
     "example:android": "yarn workspace cng-editor-example android",
     "example:ios": "yarn workspace cng-editor-example ios",
     "example:start": "yarn workspace cng-editor-example start"

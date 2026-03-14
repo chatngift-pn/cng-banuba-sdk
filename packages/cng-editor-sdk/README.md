@@ -154,11 +154,19 @@ interface EditorConfig {
 ## Running the example app
 
 ```bash
-# iOS
-cd apps/example && yarn ios
+# Install dependencies
+yarn install
+
+# iOS (first time — install CocoaPods)
+cd apps/example/ios && pod install && cd ../../..
+yarn ios
 
 # Android
-cd apps/example && yarn android
+yarn android
+
+# Or use the longer aliases
+yarn example:ios
+yarn example:android
 ```
 
 ## Roadmap
