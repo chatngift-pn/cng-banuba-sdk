@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
