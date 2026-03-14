@@ -27,6 +27,12 @@ const sdkPath = path.resolve(monorepoRoot, 'packages/cng-editor-sdk');
 const config = {
   watchFolders: [monorepoRoot],
   resolver: {
+    // Prevent Metro from walking up the directory tree beyond the
+    // explicit nodeModulesPaths below.  Without this flag Metro may
+    // discover a different react-native version installed in a parent
+    // directory or globally, which causes the "React Native version
+    // mismatch" runtime crash.
+    disableHierarchicalLookup: true,
     nodeModulesPaths: [
       path.resolve(projectRoot, 'node_modules'),
       path.resolve(monorepoRoot, 'node_modules'),
