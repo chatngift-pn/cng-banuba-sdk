@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import {
-  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
 import { useEditor } from '../../context/EditorContext';
+import { Waveform } from './Waveform';
 import type { Clip } from '../../types';
+
+const ImageComponent = () => null; // Placeholder for Image component from react-native
 
 const PIXELS_PER_SECOND = 40;
 const TRACK_HEIGHT = 56;
@@ -17,25 +20,41 @@ export function Timeline(): React.JSX.Element {
   const { state, selectClip, theme, totalDuration } = useEditor();
   const { clips, audioTracks } = state.project;
   const { currentTime } = state;
+  const screenWidth = Dimensions.get('window').width;
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const timelineWidth = Math.max(totalDuration * PIXELS_PER_SECOND + 100, screenWidth);
+  const playheadPosition = currentTime * PIXELS_PER_SECOND;
+
+  // Format time display
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    const ms = Math.floor((seconds % 1) * 100);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {/* Playhead */}
-      <View
-        style={[
-          styles.playheadLine,
-          { left: currentTime * PIXELS_PER_SECOND, backgroundColor: theme.accent },
-        ]}
-        pointerEvents="none"
-      />
+      {/* Timeline Header */}
+      <View style={[styles.header, { borderBottomColor: theme.border }]}>
+        <Text style={[styles.timeText, { color: theme.text }]}>
+          {formatTime(currentTime)}
+        </Text>
+        <View style={styles.timeRange}>
+          <Text style={[styles.rangeText, { color: theme.textSecondary }]}>
+            {formatTime(totalDuration)}
+          </Text>
+        </View>
+      </View>
 
+      {/* Main Timeline Scroll */}
       <ScrollView
+        ref={scrollViewRef}
         horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={[
-          styles.scrollContent,
-          { paddingRight: 120 },
-        ]}
+        showsHorizontalScrollIndicator={true}
+        scrollEventThrottle={16}
+        contentContainerStyle={[styles.scrollContent, { width: timelineWidth }]}
       >
         {/* Video / Image track */}
         <View style={styles.track}>
@@ -59,35 +78,54 @@ export function Timeline(): React.JSX.Element {
                 onPress={() =>
                   selectClip(state.selectedClipId === clip.id ? null : clip.id)
                 }
+                theme={theme}
               />
             ))
           )}
         </View>
 
         {/* Audio tracks */}
-        {state.project.audioTracks.map((track) => {
+        {state.project.audioTracks.map((track, index) => {
           const dur = track.timelineEnd - track.timelineStart;
           const w = Math.max(dur * PIXELS_PER_SECOND, 60);
           return (
             <View key={track.id} style={[styles.audioTrack]}>
+              <Text style={[styles.audioTrackLabel, { color: theme.text }]}>
+                Audio {index + 1}
+              </Text>
               <View
                 style={[
                   styles.audioBlock,
                   {
                     width: w,
                     left: track.timelineStart * PIXELS_PER_SECOND,
-                    backgroundColor: '#1C3B2F',
-                    borderColor: '#2ECC71',
+                    backgroundColor: theme.accent || '#1E88E5',
+                    borderColor: theme.accent || '#1E88E5',
                   },
                 ]}
               >
-                <Text style={styles.audioLabel} numberOfLines={1}>
-                  🎵 {track.asset.name}
-                </Text>
+                <Waveform
+                  duration={dur}
+                  height={24}
+                  barWidth={2}
+                  barGap={0.5}
+                  color="#FFFFFF"
+                  backgroundColor="rgba(255, 255, 255, 0.2)"
+                  theme={theme}
+                />
               </View>
             </View>
           );
         })}
+
+        {/* Playhead */}
+        <View
+          style={[
+            styles.playheadLine,
+            { left: playheadPosition, backgroundColor: theme.accent },
+          ]}
+          pointerEvents="none"
+        />
       </ScrollView>
     </View>
   );
@@ -97,10 +135,10 @@ interface ClipBlockProps {
   clip: Clip;
   isSelected: boolean;
   onPress: () => void;
+  theme?: any;
 }
 
-function ClipBlock({ clip, isSelected, onPress }: ClipBlockProps): React.JSX.Element {
-  const { theme } = useEditor();
+function ClipBlock({ clip, isSelected, onPress, theme }: ClipBlockProps): React.JSX.Element {
   const dur = (clip.endTime - clip.startTime) / clip.speed;
   const w = Math.max(dur * PIXELS_PER_SECOND, 30);
 
@@ -116,27 +154,29 @@ function ClipBlock({ clip, isSelected, onPress }: ClipBlockProps): React.JSX.Ele
           width: w,
           borderColor: isSelected ? theme.accent : theme.border,
           backgroundColor: isImage ? '#1A1A3E' : '#1A3A1A',
+          borderWidth: isSelected ? 2 : 1,
         },
       ]}
     >
-      {clip.asset.thumbnailUri ? (
-        <Image
-          source={{ uri: clip.asset.thumbnailUri }}
-          style={styles.thumbnail}
-          resizeMode="cover"
-        />
-      ) : (
-        <View style={[styles.noThumb, { backgroundColor: isImage ? '#2A2A5E' : '#2A4A2A' }]}>
-          <Text style={styles.noThumbIcon}>{isImage ? '🖼' : '🎬'}</Text>
+      {clip.asset.thumbnailUri && (
+        <View style={StyleSheet.absoluteFill}>
+          {/* Thumbnail would be rendered here */}
+          <View style={[styles.thumbnail, { backgroundColor: isImage ? '#2A2A5E' : '#2A4A2A', opacity: 0.6 }]} />
         </View>
       )}
-      <Text style={[styles.clipLabel, { color: theme.text }]} numberOfLines={1}>
+      <View style={styles.noThumb}>
+        <Text style={styles.noThumbIcon}>{isImage ? '🖼' : '🎬'}</Text>
+      </View>
+      <Text style={[styles.clipLabel, { color: theme.text || '#FFF' }]} numberOfLines={1}>
         {clip.asset.name}
       </Text>
       {clip.speed !== 1 && (
-        <Text style={[styles.speedBadge, { color: theme.accent }]}>
-          {clip.speed}×
+        <Text style={[styles.speedBadge, { color: theme.accent || '#1E88E5' }]}>
+          {clip.speed.toFixed(2)}×
         </Text>
+      )}
+      {clip.transition && (
+        <Text style={styles.transitionBadge}>⇄</Text>
       )}
     </TouchableOpacity>
   );
@@ -144,15 +184,36 @@ function ClipBlock({ clip, isSelected, onPress }: ClipBlockProps): React.JSX.Ele
 
 const styles = StyleSheet.create({
   container: {
-    height: TRACK_HEIGHT + 40,
+    height: TRACK_HEIGHT + 80,
     position: 'relative',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    gap: 8,
+  },
+  timeText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  timeRange: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  rangeText: {
+    fontSize: 12,
   },
   playheadLine: {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    width: 2,
+    width: 3,
     zIndex: 10,
+    borderLeftWidth: 1,
+    borderLeftColor: 'rgba(255, 255, 255, 0.3)',
   },
   scrollContent: {
     paddingVertical: 8,
@@ -164,10 +225,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: TRACK_HEIGHT,
     gap: 2,
+    marginBottom: 8,
   },
   audioTrack: {
-    height: 28,
+    height: 48,
     position: 'relative',
+    marginBottom: 8,
+  },
+  audioTrackLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    marginBottom: 4,
+    paddingHorizontal: 8,
   },
   audioBlock: {
     position: 'absolute',
@@ -176,6 +245,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'center',
     paddingHorizontal: 6,
+    overflow: 'hidden',
   },
   audioLabel: {
     color: '#2ECC71',
@@ -195,7 +265,6 @@ const styles = StyleSheet.create({
   },
   clip: {
     height: TRACK_HEIGHT,
-    borderWidth: 2,
     borderRadius: 6,
     overflow: 'hidden',
     justifyContent: 'flex-end',
@@ -203,14 +272,15 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     ...StyleSheet.absoluteFillObject,
-    opacity: 0.6,
   },
   noThumb: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  noThumbIcon: { fontSize: 20 },
+  noThumbIcon: {
+    fontSize: 20,
+  },
   clipLabel: {
     fontSize: 9,
     fontWeight: '600',
@@ -224,5 +294,21 @@ const styles = StyleSheet.create({
     right: 4,
     fontSize: 9,
     fontWeight: '700',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: 3,
+    paddingVertical: 1,
+    borderRadius: 2,
+  },
+  transitionBadge: {
+    position: 'absolute',
+    bottom: 4,
+    left: 4,
+    fontSize: 10,
+    fontWeight: '700',
+    backgroundColor: 'rgba(76, 175, 80, 0.8)',
+    paddingHorizontal: 2,
+    paddingVertical: 1,
+    borderRadius: 2,
+    color: '#fff',
   },
 });

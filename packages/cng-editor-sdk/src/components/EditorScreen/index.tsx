@@ -15,15 +15,17 @@ import type { EditorConfig } from '../../types';
 import { EditorCanvas } from './EditorCanvas';
 import { Toolbar } from '../Toolbar';
 import { Timeline } from '../Timeline';
-import { FilterPanel } from '../FilterPanel';
-import { AdjustPanel } from '../AdjustPanel';
-import { TextEditor } from '../TextEditor';
-import { StickerPanel } from '../StickerPanel';
-import { TransitionPanel } from '../TransitionPanel';
-import { AudioPanel } from '../AudioPanel';
+import { 
+  FilterPanel,
+  AdjustPanel,
+  TextPanel,
+  StickerPanel,
+  TransitionPanel,
+  AudioPanel,
+  SpeedPanel,
+} from '../Panels';
 import { ExportPanel } from '../ExportPanel';
 import { TrimPanel } from '../TrimPanel';
-import { SpeedPanel } from '../SpeedPanel';
 import { MediaPicker } from '../MediaPicker';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,15 +51,15 @@ function EditorInner(): React.JSX.Element {
 
   const renderBottomPanel = () => {
     switch (activeTool) {
-      case 'filters':      return <FilterPanel />;
-      case 'adjust':       return <AdjustPanel />;
-      case 'text':         return <TextEditor />;
-      case 'stickers':     return <StickerPanel />;
-      case 'transitions':  return <TransitionPanel />;
-      case 'audio':        return <AudioPanel />;
+      case 'filters':      return <FilterPanel theme={theme} />;
+      case 'adjust':       return <AdjustPanel theme={theme} onAdjustmentsChange={() => {}} />;
+      case 'text':         return <TextPanel theme={theme} onTextAdd={() => {}} />;
+      case 'stickers':     return <StickerPanel theme={theme} onStickerSelect={() => {}} />;
+      case 'transitions':  return <TransitionPanel theme={theme} onTransitionSelect={() => {}} />;
+      case 'audio':        return <AudioPanel theme={theme} onAudioAdd={() => {}} />;
       case 'export':       return <ExportPanel />;
       case 'trim':         return <TrimPanel />;
-      case 'speed':        return <SpeedPanel />;
+      case 'speed':        return <SpeedPanel theme={theme} onSpeedChange={() => {}} />;
       case 'media-picker': return <MediaPicker />;
       default:             return null;
     }
