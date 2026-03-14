@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { EditorProvider, useEditor } from '../../context/EditorContext';
+import { LocaleProvider, useLocale } from '../../i18n';
 import type { EditorConfig } from '../../types';
 import { EditorCanvas } from './EditorCanvas';
 import { Toolbar } from '../Toolbar';
@@ -42,6 +43,7 @@ function EditorInner(): React.JSX.Element {
     selectedClip,
     selectClip,
   } = useEditor();
+  const { t } = useLocale();
 
   const activeTool = state.activeTool;
 
@@ -114,13 +116,13 @@ function EditorInner(): React.JSX.Element {
               style={[styles.clipActionBtn, { backgroundColor: theme.surfaceAlt }]}
               onPress={() => selectClip(null)}
             >
-              <Text style={{ color: theme.textSecondary, fontSize: 12 }}>Deselect</Text>
+              <Text style={{ color: theme.textSecondary, fontSize: 12 }}>{t.editor_deselect}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.clipActionBtn, { backgroundColor: theme.danger + '20', borderColor: theme.danger }]}
               onPress={() => { removeClip(selectedClip.id); selectClip(null); }}
             >
-              <Text style={{ color: theme.danger, fontSize: 12 }}>🗑 Remove</Text>
+              <Text style={{ color: theme.danger, fontSize: 12 }}>🗑 {t.editor_remove}</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -157,9 +159,11 @@ export interface EditorScreenProps {
 
 export function EditorScreen({ config = {} }: EditorScreenProps): React.JSX.Element {
   return (
-    <EditorProvider config={config}>
-      <EditorInner />
-    </EditorProvider>
+    <LocaleProvider locale={config.locale ?? 'en'}>
+      <EditorProvider config={config}>
+        <EditorInner />
+      </EditorProvider>
+    </LocaleProvider>
   );
 }
 

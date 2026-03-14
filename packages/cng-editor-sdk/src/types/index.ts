@@ -234,6 +234,18 @@ export interface ExportProgress {
 }
 
 // ─────────────────────────────────────────────
+//  Creation flow types
+// ─────────────────────────────────────────────
+
+export type CreationFlowStep =
+  | 'source-select'
+  | 'gallery'
+  | 'camera'
+  | 'edit'
+  | 'audio'
+  | 'save';
+
+// ─────────────────────────────────────────────
 //  SDK config type
 // ─────────────────────────────────────────────
 
@@ -250,6 +262,8 @@ export interface EditorConfig {
   onClose?: () => void;
   /** Called when export is complete */
   onExportComplete?: (outputUri: string) => void;
+  /** Locale for UI strings (default: 'en') */
+  locale?: import('../i18n/strings').Locale;
 }
 
 export interface EditorTheme {
