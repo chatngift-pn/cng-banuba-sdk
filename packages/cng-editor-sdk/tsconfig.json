@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "jsx": "react-native",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": ["jest"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "compileOnSave": true,
+  "include": ["src"],
+  "exclude": ["node_modules", "android", "ios", "dist", "lib"]
+}

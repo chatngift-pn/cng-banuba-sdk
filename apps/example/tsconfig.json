@@ -1,0 +1,10 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "cng-editor-sdk": ["../../packages/cng-editor-sdk/src/index.ts"]
+    }
+  }
+}

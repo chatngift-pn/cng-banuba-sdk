@@ -1,0 +1,66 @@
+{
+  "name": "cng-editor-sdk",
+  "version": "0.1.0",
+  "description": "CapCut-inspired video/photo/audio editor SDK for React Native",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --fix",
+    "test": "jest",
+    "prepare": "tsc --project tsconfig.build.json"
+  },
+  "keywords": [
+    "react-native",
+    "video-editor",
+    "photo-editor",
+    "capcut",
+    "sdk",
+    "typescript"
+  ],
+  "author": "CNG Banuba SDK",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.71.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@types/jest": "^30.0.0",
+    "@types/react": "^18.2.55",
+    "@types/react-native": "^0.73.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "babel-jest": "^30.3.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "src",
+    "android",
+    "ios",
+    "*.podspec",
+    "README.md"
+  ],
+  "jest": {
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx|js|jsx)$": "babel-jest"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.test.ts"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Build artifacts
+dist/
+lib/
+build/
+*.tsbuildinfo
+
+# SDK compiled output
+packages/cng-editor-sdk/lib/
+
+# React Native
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# Android
+apps/example/android/app/build/
+apps/example/android/build/
+apps/example/android/.gradle/
+apps/example/android/local.properties
+
+# iOS
+apps/example/ios/build/
+apps/example/ios/Pods/
+apps/example/ios/*.xcworkspace
+
+# Misc
+.DS_Store
+*.log
+.env
+.env.*
+coverage/
