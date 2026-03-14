@@ -101,7 +101,7 @@ export function CameraScreen({
     }
   };
 
-  const flashIcon = flash === 'off' ? '⚡' : flash === 'on' ? '⚡' : '⚡';
+  const flashIcon = flash === 'off' ? '⚡' : flash === 'on' ? '🔦' : '💡';
   const flashLabel = flash === 'off' ? 'Off' : flash === 'on' ? 'On' : 'Auto';
 
   const cycleFlash = () => {
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#FF0000',
   },
-  recText: { color: '#fff', fontSize: 14, fontWeight: '700', fontVariant: ['tabular-nums'] },
+  recText: { color: '#fff', fontSize: 14, fontWeight: '700', fontFamily: 'monospace' },
   modeRow: {
     flexDirection: 'row',
     justifyContent: 'center',
