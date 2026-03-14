@@ -9,6 +9,18 @@
 export { EditorScreen, EditorModal } from './components/EditorScreen';
 export type { EditorScreenProps, EditorModalProps } from './components/EditorScreen';
 
+// Multi-step creation flow
+export { CreationFlow } from './components/CreationFlow';
+export type { CreationFlowProps } from './components/CreationFlow';
+
+// Camera
+export { CameraScreen } from './components/CameraScreen';
+export type { CameraScreenProps } from './components/CameraScreen';
+
+// Save
+export { SaveScreen } from './components/SaveScreen';
+export type { SaveScreenProps } from './components/SaveScreen';
+
 // Individual panels (for custom layouts)
 export { Toolbar } from './components/Toolbar';
 export { Timeline } from './components/Timeline';
@@ -31,6 +43,18 @@ export {
   useEditor,
 } from './context/EditorContext';
 export type { EditorContextValue, EditorState } from './context/EditorContext';
+
+// ─── i18n / Localization ──────────────────────────────────────────────────────
+export {
+  LocaleProvider,
+  useLocale,
+  LocaleContext,
+  getStrings,
+  getAvailableLocales,
+  en,
+  pt,
+} from './i18n';
+export type { Locale, LocaleStrings, LocaleProviderProps } from './i18n';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export type {
@@ -60,6 +84,8 @@ export type {
   EditorProject,
   AspectRatio,
   ActiveTool,
+  // Creation flow
+  CreationFlowStep,
   // Export
   ExportQuality,
   ExportFormat,
