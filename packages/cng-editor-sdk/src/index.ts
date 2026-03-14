@@ -9,7 +9,7 @@ import { LogBox } from 'react-native';
 
 // Suppress known React Native warning where iOS UIScrollView fires an
 // `onUserDrivenAnimationEnded` event that RCTNativeAnimatedModule does not
-// recognise. This is a platform-level issue, not an SDK bug.
+// recognize. This is a platform-level issue, not an SDK bug.
 LogBox.ignoreLogs([
   '`onUserDrivenAnimationEnded` is not a supported event type',
 ]);
